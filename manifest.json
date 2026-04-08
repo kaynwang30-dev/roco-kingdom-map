@@ -1,0 +1,24 @@
+{
+  "timestamp": "2026-04-08T05:58:11.517Z",
+  "targetUrl": "https://www.taptap.cn/app-map/detail/188212/?map=61&area=1252&zoom=8.8850893325&center=0.0260925293,0.6885172114&type=5512&create_type_ids=",
+  "totalResources": 471,
+  "stats": {
+    "css": 7,
+    "js": 25,
+    "images": 321,
+    "fonts": 52,
+    "tiles": 64,
+    "data": 4
+  },
+  "htmlSize": 18077,
+  "domSizes": {
+    "cdp": 24513,
+    "pageContent": 24513
+  },
+  "apiEndpoints": [
+    "https://www.taptap.cn/map/index/index?game_id=188212",
+    "https://www.taptap.cn/webapiv2/map/point/v1/get-group-label?app_id=188212&X-UA=V%3D1%26PN%3DWebApp%26LANG%3Dzh_CN%26VN_CODE%3D1%26LOC%3DCN%26PLT%3DPC%26DS%3DAndroid%26UID%3De511144a-cb4f-4eeb-b6f2-663ca7b274d6%26OS%3DMacOS%26OSV%3D10.15.7%26DT%3DPC",
+    "https://www.taptap.cn/map/point/mark_list?map_id=61&user_id=0&uuid=1CFED66C3441",
+    "https://www.taptap.cn/map/version_log/list?status=2&game_id=188212"
+  ]
+}

@@ -1,0 +1,7 @@
+/**
+ * name: @taptap-cupid-spa/game-map
+ * version: v1.0.0
+ * description: game map
+ * author: jon@ucbay.com
+ */
+.switch[data-v-0a0835db]{position:relative;display:inline-block;width:48px;height:28px;margin:auto}.switch input[data-v-0a0835db]{opacity:0;width:0;height:0}.switch .slider[data-v-0a0835db]{position:absolute;top:0;left:0;right:0;bottom:0;background-color:var(--color-bg1);box-shadow:0 0 1px var(--color-text2);-webkit-transition:.4s;transition:.4s;border-radius:28px}.switch .slider[data-v-0a0835db]:before{position:absolute;content:"";height:22px;width:22px;left:3px;bottom:3px;background-color:var(--color-text1);-webkit-transition:.4s;transition:.4s;border-radius:50%}.switch .slider[data-v-0a0835db]:after{pointer-events:none;content:"";position:absolute;width:2px;height:10px;margin:9px 0 0 33px;transition:all .2s ease-in-out;background-color:rgba(var(--color-text1-rgb),.6)}.switch input:checked+.slider[data-v-0a0835db]{box-shadow:none;background-color:var(--color-text2)}.switch input:focus+.slider[data-v-0a0835db]{outline:4px solid rgba(var(--color-text3-rgb),.1)}.switch input:checked+.slider[data-v-0a0835db]:before{background-color:var(--color-bg1);-webkit-transform:translateX(20px);-ms-transform:translateX(20px);transform:translate(20px)}.switch input:checked+.slider[data-v-0a0835db]:after{background-color:var(--color-bg1);margin-left:12px}.switch input:disabled+.slider[data-v-0a0835db]{background-color:var(--color-bg2)}.switch input:disabled+.slider[data-v-0a0835db]:before{background-color:var(--color-bg1);opacity:.8}

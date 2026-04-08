@@ -1,0 +1,7 @@
+/**
+ * name: @taptap-cupid-spa/game-map
+ * version: v1.0.0
+ * description: game map
+ * author: jon@ucbay.com
+ */
+.block-bg[data-v-55b68c2f]{background-color:var(--color-bg2);border-radius:8px;padding:12px 8px;margin-bottom:10px}.block-bg[data-v-55b68c2f]:active{opacity:.7}.title[data-v-55b68c2f]{font-size:15px;color:var(--color-text2);display:-webkit-box;-webkit-box-orient:vertical;text-overflow:ellipsis;line-clamp:1;-webkit-line-clamp:1;overflow:hidden;font-weight:700}.content-desc[data-v-55b68c2f]{font-size:13px;color:var(--color-text1);margin:14px 0 16px;word-break:break-all;text-overflow:ellipsis;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;line-height:1.6em}.date[data-v-55b68c2f]{font-size:11px;color:var(--color-text1);opacity:.7}.detail[data-v-55b68c2f]{padding:12px 8px}.detail .title[data-v-55b68c2f]{color:var(--color-text1)}.detail .content[data-v-55b68c2f]{font-size:13px;color:var(--color-text1);margin:14px 0 16px;white-space:pre-wrap;text-align:justify;-webkit-user-select:text;user-select:text;line-height:1.6em}.detail .img-wrapper[data-v-55b68c2f]{margin-top:12px;height:160px;overflow:hidden;border-radius:8px}.detail .img-wrapper img[data-v-55b68c2f]{width:100%;height:100%;object-fit:cover}

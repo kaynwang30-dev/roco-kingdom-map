@@ -1,0 +1,7 @@
+/**
+ * name: @taptap-cupid-spa/game-map
+ * version: v1.0.0
+ * description: game map
+ * author: jon@ucbay.com
+ */
+@charset "UTF-8";.moment-point-card{color:var(--color-text1)}.moment-point-card .card-left{width:96px;height:72px;object-fit:cover;border-radius:8px;margin-right:12px}.moment-point-card .card-right{width:0;flex:1;display:flex;flex-direction:column;justify-content:space-between;align-self:stretch}.moment-point-card .card-content{font-size:12px}.moment-point-card .card-content-text{line-height:18px;flex:1;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;word-break:break-word}.moment-point-card .card-footer{font-weight:700;font-size:10px;height:20px}
