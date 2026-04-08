@@ -4,11 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>QQ游戏中心 - 洛克王国：世界百事通</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<link rel="stylesheet" href="assets/css/all-styles.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- all-styles.css 非阻塞加载，避免89KB原版CSS阻塞首屏 -->
+<link rel="stylesheet" href="assets/css/all-styles.css" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="assets/css/all-styles.css"></noscript>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;900&display=swap');
+/* 内联光标样式（原在 all-styles.css 中） */
+body { cursor: url("assets/images/Fo-3QFlAli_wVcy7uIzw-2frEBTw.png_f43a3c1b0a99.png"), auto; }
 
 :root {
   --bg-primary: #f2f0ff;
@@ -459,18 +462,22 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg-p
   :root {
     --panel-width: 100vw;
     --header-height: 48px;
-    --footer-height: 48px;
+    --footer-height: 44px;
+    --mobile-panel-height: 50vh;
   }
 
   .top-header { padding: 0 12px; }
+  .top-header .logo-icon { width: 24px; height: 24px; margin-right: 6px; }
   .top-header .header-title { font-size: 14px; }
   .top-header .header-badge { display: none; }
   .top-header .header-btn { padding: 5px 10px; font-size: 11px; }
+  /* 移动端顶栏 SVG 图标强制可见 */
+  .top-header .header-btn svg { width: 14px; height: 14px; fill: currentColor; display: inline-block; }
 
   /* 面板改为底部抽屉模式 */
   .panel {
     position: absolute; top: auto; left: 0; right: 0; bottom: var(--footer-height);
-    width: 100vw; height: 50vh;
+    width: 100vw; height: var(--mobile-panel-height);
     border-right: none; border-top: 1px solid var(--border);
     border-radius: var(--radius-lg) var(--radius-lg) 0 0;
     z-index: 250;
@@ -478,14 +485,19 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg-p
     transition: transform .3s cubic-bezier(0.4,0,0.2,1);
   }
   .panel.collapsed { transform: translateY(100%); }
-  .panel.collapsed ~ #map-container { left: 0; }
+  .panel.collapsed ~ #map-container { left: 0; bottom: var(--footer-height); }
 
   #map-container {
-    position: absolute; top: var(--header-height); left: 0; right: 0; bottom: calc(50vh + var(--footer-height));
+    position: absolute; top: var(--header-height); left: 0; right: 0;
+    bottom: calc(var(--mobile-panel-height) + var(--footer-height));
   }
 
   /* 收集物列表移动端也双列 */
   .type-grid { grid-template-columns: 1fr 1fr; gap: 6px; padding: 4px 10px 12px; }
+
+  /* 分类 icon 图片在移动端确保可见 */
+  .type-item .icon-wrap { width: 26px; height: 26px; }
+  .type-item .icon-wrap img { width: 100%; height: 100%; object-fit: contain; border-radius: 4px; display: block; }
 
   /* Tab 在移动端改为滚动条 */
   .tabs { 
@@ -494,54 +506,93 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg-p
     -webkit-overflow-scrolling: touch;
   }
   .tabs::-webkit-scrollbar { display: none; }
-  .tab-item { flex-shrink: 0; padding: 6px 8px; min-width: 60px; }
-  .tab-item .tab-emoji { font-size: 16px; }
+  .tab-item { flex-shrink: 0; padding: 6px 8px; min-width: 56px; }
+  .tab-item .tab-emoji { font-size: 16px; line-height: 1.2; display: block; }
   .tab-item .tab-label { font-size: 9px; }
 
-  /* 缩放控件移动端调整 */
-  .zoom-controls { left: 12px !important; bottom: calc(50vh + var(--footer-height) + 8px) !important; }
+  /* 缩放控件移动端调整 - 放在地图右下角 */
+  .zoom-controls {
+    left: auto !important; right: 12px !important;
+    bottom: calc(var(--mobile-panel-height) + var(--footer-height) + 8px) !important;
+  }
   .map-controls { top: 8px; right: 8px; }
   .ctrl-btn { width: 34px; height: 34px; }
+  /* 确保控制按钮图标可见 */
+  .ctrl-btn svg { width: 16px; height: 16px; fill: currentColor; display: block; }
 
-  /* 展开按钮移动端：底部居中 */
+  /* 展开按钮移动端：底部居中，紧贴footer上方 */
   .expand-btn {
     position: absolute; bottom: var(--footer-height); left: 50%; top: auto;
     transform: translateX(-50%) translateY(0);
-    width: 44px; height: 20px;
+    width: 44px; height: 22px;
     border-radius: var(--radius-sm) var(--radius-sm) 0 0;
     border: 1px solid var(--border); border-bottom: none;
+    background: white; z-index: 260;
   }
+  .expand-btn svg { width: 14px; height: 14px; fill: currentColor; transform: rotate(90deg); }
 
   /* 底部栏 */
   .bottom-footer { height: var(--footer-height); padding: 0 10px; }
   .footer-source { font-size: 10px !important; }
+  .footer-source .dot { width: 3px; height: 3px; }
   .footer-link { padding: 4px 10px !important; font-size: 10px !important; }
+  .footer-link svg { width: 12px; height: 12px; fill: currentColor; display: inline-block; }
 
-  /* 选中标记底部栏在面板上方 */
-  .selected-bar { left: 0; bottom: calc(50vh + var(--footer-height)); }
+  /* ===== 关键修复：选中标记底部栏（收起/清空）置顶在面板内部顶部 ===== */
+  .selected-bar {
+    position: fixed; left: 0; right: 0;
+    bottom: auto; top: var(--header-height);
+    height: 44px; z-index: 280;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-top: none; border-bottom: 1px solid var(--border);
+  }
+  .selected-bar .icons-row { gap: 3px; }
+  .selected-bar .sel-icon { width: 28px; height: 28px; border-radius: 6px; }
+  .selected-bar .clear-btn { font-size: 12px; padding: 4px 10px; }
 
-  /* 区域选择弹窗全屏 */
-  .area-modal .area-modal-panel { width: 90vw; max-width: 360px; max-height: 70vh; }
+  /* 区域选择弹窗适配移动端 */
+  .area-modal { width: 90vw; max-width: 360px; }
 
   /* 新建标记表单 */
   .marker-form-modal { width: 90vw; max-width: 360px; }
 
-  /* 新建横幅调整 */
-  .add-marker-banner { bottom: calc(50vh + var(--footer-height) + 8px); font-size: 12px; padding: 8px 16px; }
+  /* 新建横幅调整 - 在地图区域底部 */
+  .add-marker-banner {
+    bottom: calc(var(--mobile-panel-height) + var(--footer-height) + 8px);
+    font-size: 12px; padding: 8px 16px;
+  }
 
   /* 更新日志弹窗适配 */
   .changelog-overlay .changelog-modal { width: 90vw; max-width: 400px; max-height: 80vh; }
+
+  /* 选项下拉菜单移动端适配 */
+  .settings-dropdown {
+    top: calc(var(--header-height) + 4px); right: 8px; width: 240px;
+  }
+  .settings-item { padding: 10px 14px; font-size: 12px; }
+  .settings-item .s-icon svg { width: 16px; height: 16px; fill: var(--text-secondary); display: block; }
+
+  /* SVG图标通用修复 - 确保移动端所有SVG正常渲染 */
+  svg { overflow: visible; }
+  .pin-icon, .area-bar svg { width: 16px; height: 16px; fill: var(--accent); display: inline-block; }
+  .collapse-btn svg { width: 12px; height: 12px; fill: currentColor; display: inline-block; }
 }
 
 @media (max-width: 480px) {
+  :root {
+    --mobile-panel-height: 42vh;
+  }
+
   .top-header .header-right { gap: 4px; }
   .top-header .header-btn:first-child { display: none; }
   
-  .panel { height: 45vh; }
-  #map-container { bottom: calc(45vh + var(--footer-height)); }
-  .zoom-controls { bottom: calc(45vh + var(--footer-height) + 8px) !important; }
-  .selected-bar { bottom: calc(45vh + var(--footer-height)); }
-  .add-marker-banner { bottom: calc(45vh + var(--footer-height) + 8px); }
+  .panel { height: var(--mobile-panel-height); }
+  #map-container { bottom: calc(var(--mobile-panel-height) + var(--footer-height)); }
+  .zoom-controls { bottom: calc(var(--mobile-panel-height) + var(--footer-height) + 8px) !important; }
+  .add-marker-banner { bottom: calc(var(--mobile-panel-height) + var(--footer-height) + 8px); }
+
+  /* 选中标记栏在480px下保持置顶 */
+  .selected-bar { top: var(--header-height); bottom: auto; }
 }
 </style>
 </head>
@@ -857,6 +908,23 @@ function getIconUrl(iconName) {
   return 'https://img-tc.tapimg.com/market/images/' + iconName;
 }
 
+// 图片加载失败时的 fallback 处理
+function handleImgError(img) {
+  const src = img.getAttribute('src') || '';
+  const iconName = img.getAttribute('data-icon-name') || '';
+  // 如果本地路径失败，尝试远程 CDN
+  if (src.startsWith(ICON_BASE) && iconName) {
+    img.src = 'https://img-tc.tapimg.com/market/images/' + iconName;
+    return;
+  }
+  // 如果远程也失败，显示占位 emoji
+  img.style.display = 'none';
+  const placeholder = document.createElement('span');
+  placeholder.textContent = '📍';
+  placeholder.style.cssText = 'font-size:20px;display:flex;align-items:center;justify-content:center;width:100%;height:100%;';
+  img.parentNode.appendChild(placeholder);
+}
+
 // ============ 地图初始化 ============
 let currentTileLayer = null;
 const map = L.map('map-container', {
@@ -1048,7 +1116,27 @@ function toggleMarkPoint(pointId) {
 // ============ 面板交互 ============
 function renderTabs() {
   const tabsEl = document.getElementById('tabs');
-  tabsEl.innerHTML = TYPE_GROUPS.map(g => 
+  const availableGroups = getAvailableGroups();
+  
+  if (availableGroups.length === 0) {
+    // 当前地区无可用分组，显示空状态
+    tabsEl.innerHTML = '';
+    const content = document.getElementById('panelContent');
+    content.innerHTML = `
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;color:var(--text-secondary);">
+        <div style="font-size:48px;margin-bottom:16px;">🔮</div>
+        <div style="font-size:15px;font-weight:600;color:var(--text-primary);margin-bottom:8px;">魔法学院区域</div>
+        <div style="font-size:13px;line-height:1.6;color:var(--text-secondary);">该区域的标点数据正在采集中<br>敬请期待后续更新～</div>
+      </div>`;
+    return;
+  }
+  
+  // 确保 activeGroupId 在可用分组中，否则切换到第一个可用分组
+  if (!availableGroups.find(g => g.id === activeGroupId)) {
+    activeGroupId = availableGroups[0].id;
+  }
+  
+  tabsEl.innerHTML = availableGroups.map(g => 
     `<div class="tab-item${g.id === activeGroupId ? ' active' : ''}" data-gid="${g.id}"><span class="tab-emoji">${g.emoji}</span><span class="tab-label">${g.title}</span></div>`
   ).join('');
   
@@ -1081,7 +1169,7 @@ function switchGroup(gid) {
     const isSelected = selectedTypeIds.has(t.id);
     html += `<div class="type-item${isSelected ? ' selected' : ''}" data-tid="${t.id}">
       <div class="icon-wrap">
-        <img src="${getIconUrl(t.icon)}" alt="${t.title}" loading="lazy">
+        <img src="${getIconUrl(t.icon)}" alt="${t.title}" loading="lazy" data-icon-name="${t.icon}" onerror="handleImgError(this)">
         <div class="check-badge"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
       </div>
       <span class="type-name">${t.title}</span>
@@ -1125,7 +1213,7 @@ function updateSelectedBar() {
   selectedTypeIds.forEach(tid => {
     const t = typeIconMap[tid];
     if (t) {
-      html += `<img class="sel-icon" src="${getIconUrl(t.icon)}" alt="${t.title}" title="${t.title}">`;
+      html += `<img class="sel-icon" src="${getIconUrl(t.icon)}" alt="${t.title}" title="${t.title}" data-icon-name="${t.icon}" onerror="handleImgError(this)">`;
     }
   });
   
@@ -1138,7 +1226,23 @@ const AREA_TILE_SETS = {
   '91': 'https://assets.tapimg.com/cupid-apps/game-map/rocokindom/tiles/3月-魔法学院地图/{z}/{x}_{y}.jpg?x-oss-process=image/format,webp/quality,q_85',
 };
 let currentMapId = '61';
+let currentArea = 'fengmian'; // 当前地区标识
 // currentTileLayer 已在地图初始化时赋值，不再重新声明
+
+// 各地区可用的分组ID映射（魔法学院暂无标点数据）
+const AREA_AVAILABLE_GROUPS = {
+  'fengmian': null,     // null 表示显示所有分组
+  'luokelian': null,    // null 表示显示所有分组
+  'mofaxueyuan': [],    // 空数组表示该区域暂无可用分组
+};
+
+// 获取当前地区可用的分组
+function getAvailableGroups() {
+  const available = AREA_AVAILABLE_GROUPS[currentArea];
+  if (available === null) return TYPE_GROUPS; // 显示所有
+  if (available.length === 0) return []; // 无可用分组
+  return TYPE_GROUPS.filter(g => available.includes(g.id));
+}
 
 // 初始化切换地区按钮
 document.querySelector('.switch-btn').addEventListener('click', () => {
@@ -1159,9 +1263,11 @@ document.querySelectorAll('.area-card').forEach(card => {
     const lng = parseFloat(card.dataset.lng);
     const mapId = card.dataset.map;
     const areaName = card.querySelector('.area-title').textContent;
+    const areaKey = card.dataset.area;
 
-    // 更新区域名
+    // 更新区域名和当前地区标识
     document.getElementById('areaName').textContent = areaName;
+    currentArea = areaKey;
 
     // 切换瓦片图层
     if (mapId !== currentMapId) {
@@ -1173,12 +1279,32 @@ document.querySelectorAll('.area-card').forEach(card => {
       currentMapId = mapId;
     }
 
+    // 切换地区时清空已选标记和地图上的标记
+    selectedTypeIds.clear();
+    renderMarkers();
+
     // 飞往目标区域
     map.flyTo([lat, lng], 10, { duration: 1, easeLinearity: 0.25 });
 
     // 高亮选中的area-card
     document.querySelectorAll('.area-card').forEach(c => c.classList.remove('active'));
     card.classList.add('active');
+
+    // 重新渲染面板（根据新地区过滤分类）
+    renderTabs();
+    const availableGroups = getAvailableGroups();
+    if (availableGroups.length > 0) {
+      switchGroup(activeGroupId);
+    }
+
+    // 切换地区时也隐藏/显示地名标注
+    if (areaKey === 'mofaxueyuan') {
+      // 魔法学院是独立地图，隐藏卡洛西亚的地名标注
+      regionLabels.forEach(l => map.removeLayer(l));
+    } else {
+      // 恢复地名标注
+      regionLabels.forEach(l => l.addTo(map));
+    }
 
     // 关闭弹窗
     document.getElementById('areaOverlay').classList.remove('show');
@@ -1196,7 +1322,9 @@ document.getElementById('collapseBtn').addEventListener('click', () => {
     document.getElementById('map-container').style.bottom = 'var(--footer-height)';
   }
   document.getElementById('expandBtn').style.display = 'flex';
-  map.invalidateSize();
+  // 隐藏选中标记栏当面板收起时
+  document.getElementById('selectedBar').classList.remove('show');
+  setTimeout(() => map.invalidateSize(), 350);
 });
 
 document.getElementById('expandBtn').addEventListener('click', () => {
@@ -1207,7 +1335,11 @@ document.getElementById('expandBtn').addEventListener('click', () => {
     document.getElementById('map-container').style.bottom = '';
   }
   document.getElementById('expandBtn').style.display = 'none';
-  map.invalidateSize();
+  // 恢复选中标记栏
+  if (selectedTypeIds.size > 0) {
+    document.getElementById('selectedBar').classList.add('show');
+  }
+  setTimeout(() => map.invalidateSize(), 350);
 });
 
 document.getElementById('zoomIn').addEventListener('click', () => map.zoomIn());
@@ -1436,9 +1568,10 @@ document.getElementById('cancelAddMarker').addEventListener('click', stopAddMark
 
 map.on('click', (e) => {
   if (!addMarkerMode) return;
-  pendingMarkerLatLng = e.latlng;
+  const clickedLatLng = e.latlng;
   stopAddMarkerMode();
-  showAddMarkerForm(e.latlng);
+  pendingMarkerLatLng = clickedLatLng; // 在 stopAddMarkerMode 之后重新赋值，避免被清空
+  showAddMarkerForm(clickedLatLng);
 });
 
 function showAddMarkerForm(latlng) {
